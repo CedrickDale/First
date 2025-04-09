@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import LandingPage from './LandingPage';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (email === 'user@example.com' && password === 'password123') {
+      setMessage('Login successful!');
+      setIsLoggedIn(true); // Navigate to LandingPage
+    } else {
+      setMessage('Invalid email or password.');
+    }
+  };
+
+  if (isLoggedIn) {
+    return <LandingPage />;
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="login-container">
+      <h1>Login</h1>
+      <form onSubmit={handleLogin}>
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+      {message && <p className="message">{message}</p>}
+      <div className="options">
+        <a href="#">Forgot Password?</a>
+        <a href="#">Sign Up</a>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
